@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IronFall — Obrona Pracy Inżynierskiej</title>
+    <meta name="description"
+        content="Prezentacja obrony pracy inżynierskiej: Projektowanie i implementacja gry VR FPS w Unreal Engine 5">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/theme/black.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/monokai.min.css">
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="reveal">
+        <div class="slides">
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--                        TITLE SLIDE                         -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section id="title"
+                data-background-gradient="radial-gradient(ellipse at 20% 80%, #0d1b2a 0%, #0b090a 50%, #161a1d 100%)">
+                <div class="title-layout">
+                    <div class="title-badge">PRACA INŻYNIERSKA</div>
+                    <h1 class="title-main">
+                        <span class="title-iron">Iron</span><span class="title-fall">Fall</span>
+                    </h1>
+                    <p class="title-subtitle">Projektowanie i implementacja gry typu <strong>VR FPS</strong><br>w
+                        silniku Unreal Engine 5</p>
+                    <div class="title-divider"></div>
+                    <div class="title-meta">
+                        <div class="title-meta-item">
+                            <span class="meta-label">Autorzy</span>
+                            <span class="meta-value">Uladzislau Pastushok &amp; Mikhail Rybalka</span>
+                        </div>
+                        <div class="title-meta-item">
+                            <span class="meta-label">Promotor</span>
+                            <span class="meta-value">dr inż. Andrzej Urbański</span>
+                        </div>
+                        <div class="title-meta-item">
+                            <span class="meta-label">Rok</span>
+                            <span class="meta-value">2026</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="floating-particles" aria-hidden="true">
+                    <div class="particle p1"></div>
+                    <div class="particle p2"></div>
+                    <div class="particle p3"></div>
+                    <div class="particle p4"></div>
+                    <div class="particle p5"></div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--                     VIDEO SHOWCASE                        -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section id="videos"
+                data-background-gradient="radial-gradient(ellipse at 50% 50%, #1b2838 0%, #0b090a 70%)">
+                <h2 class="section-title">Showcase — Gameplay</h2>
+                <div class="video-grid">
+                    <div class="video-card video-main">
+                        <iframe src="https://www.youtube.com/embed/StOMgjWLeuw" title="IronFall Showcase 1"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card">
+                        <iframe src="https://www.youtube.com/embed/vj4Mv61gFTk" title="IronFall Showcase 2"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card">
+                        <iframe src="https://www.youtube.com/embed/-tYZhfjdLGQ" title="IronFall Showcase 3"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card">
+                        <iframe src="https://www.youtube.com/embed/DYrO6otw2n0" title="IronFall Showcase 4"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                    <div class="video-card">
+                        <iframe src="https://www.youtube.com/embed/xKEbXkHccOs" title="IronFall Showcase 5"
+                            frameborder="0"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                            allowfullscreen></iframe>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--                          AGENDA                            -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section id="agenda" data-background-gradient="linear-gradient(135deg, #0b090a 0%, #1b2838 100%)">
+                <h2 class="section-title">Agenda</h2>
+                <div class="agenda-grid">
+                    <div class="agenda-item" style="--i:1">
+                        <div class="agenda-num">01</div>
+                        <div class="agenda-text">Cel i Zakres Pracy</div>
+                    </div>
+                    <div class="agenda-item" style="--i:2">
+                        <div class="agenda-num">02</div>
+                        <div class="agenda-text">MoSCoW</div>
+                    </div>
+                    <div class="agenda-item" style="--i:3">
+                        <div class="agenda-num">03</div>
+                        <div class="agenda-text">Architektura Systemu</div>
+                    </div>
+                    <div class="agenda-item" style="--i:4">
+                        <div class="agenda-num">04</div>
+                        <div class="agenda-text">Zapewnienie Jakości i Wydajność</div>
+                    </div>
+                    <div class="agenda-item" style="--i:5">
+                        <div class="agenda-num">05</div>
+                        <div class="agenda-text">Showcase</div>
+                    </div>
+                    <div class="agenda-item" style="--i:6">
+                        <div class="agenda-num">06</div>
+                        <div class="agenda-text">Podsumowanie</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--           01 — CEL I ZAKRES PRACY  (~5 slides)             -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section>
+                <!-- 01.1 — Section opener: WHAT & WHY -->
+                <section id="s1-intro"
+                    data-background-gradient="radial-gradient(ellipse at 70% 30%, #1b2838 0%, #0b090a 70%)">
+                    <div class="section-opener">
+                        <div class="section-opener-num">01</div>
+                        <h2 class="section-opener-title">Cel i Zakres Pracy</h2>
+                        <p class="section-opener-why">Określenie <strong>co</strong> budujemy i
+                            <strong>dlaczego</strong> właśnie to
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 01.2 — Cel pracy -->
+                <section id="s1-cel"
+                    data-background-gradient="radial-gradient(ellipse at 30% 60%, #1b2838 0%, #0b090a 70%)">
+                    <div class="section-header-badge">01</div>
+                    <h2 class="section-title">Cel pracy</h2>
+                    <div class="card-glass card-wide">
+                        <p class="card-text-big">
+                            Zaprojektowanie i implementacja <strong>grywalnego prototypu</strong> gry typu
+                            <span class="highlight">First-Person Shooter</span> dedykowanego środowisku
+                            <span class="highlight">wirtualnej rzeczywistości</span>.
+                        </p>
+                    </div>
+                    <div class="three-cols" style="margin-top: 1.5rem;">
+                        <div class="mini-card">
+                            <div class="mini-icon">🎯</div>
+                            <div class="mini-label">Weryfikacja</div>
+                            <div class="mini-desc">Decyzji architektonicznych i technicznych</div>
+                        </div>
+                        <div class="mini-card">
+                            <div class="mini-icon">🕹️</div>
+                            <div class="mini-label">Mechaniki VR</div>
+                            <div class="mini-desc">Adaptacja FPS do mediów immersyjnych</div>
+                        </div>
+                        <div class="mini-card">
+                            <div class="mini-icon">📦</div>
+                            <div class="mini-label">Buildy</div>
+                            <div class="mini-desc">Meta Quest (standalone) + PC VR</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 01.3 — Wyzwania VR -->
+                <section id="s1-vr-challenges"
+                    data-background-gradient="radial-gradient(ellipse at 60% 30%, #1b2838 0%, #0b090a 70%)">
+                    <div class="section-header-badge">01</div>
+                    <h2 class="section-title">Wyzwania VR</h2>
+                    <div class="two-cols">
+                        <div class="card-glass">
+                            <h3 class="card-heading">Wymagania środowiska</h3>
+                            <ul class="styled-list">
+                                <li>Minimum <strong>72–90 FPS</strong> stabilnie</li>
+                                <li>Latencja Motion-to-Photon <strong>&lt; 11.1 ms</strong></li>
+                                <li>Ograniczenia standalone (Quest)</li>
+                                <li>Komfort użytkownika vs. immersja</li>
+                                <li>Renderowanie <strong>stereoskopowe</strong> (2× obciążenie GPU)</li>
+                            </ul>
+                        </div>
+                        <div class="card-glass">
+                            <h3 class="card-heading">Dlaczego Unreal Engine 5?</h3>
+                            <ul class="styled-list">
+                                <li>Rozbudowany zestaw narzędzi</li>
+                                <li>Grafika wysokiej jakości out-of-the-box</li>
+                                <li>Hybrydowy model: <strong>C++ + Blueprints</strong></li>
+                                <li>Wcześniejsze doświadczenie zespołu</li>
+                                <li>Brak konieczności dodatkowych bibliotek</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 01.4 — Diagram kontekstu -->
+                <section id="s1-context"
+                    data-background-gradient="radial-gradient(ellipse at 40% 70%, #1b2838 0%, #0b090a 70%)">
+                    <div class="section-header-badge">01</div>
+                    <h2 class="section-title">Diagram kontekstu</h2>
+                    <div class="image-container">
+                        <img src="obrazki/Diagram kontekstu.png" alt="Diagram kontekstu systemu IronFall"
+                            class="slide-image">
+                    </div>
+                    <div class="image-caption-bar">
+                        <div class="caption-item"><strong>Gracz</strong> — ruchy fizyczne + kontrolery</div>
+                        <div class="caption-divider"></div>
+                        <div class="caption-item"><strong>OpenXR</strong> — pośrednik sprzęt ↔ silnik</div>
+                        <div class="caption-divider"></div>
+                        <div class="caption-item"><strong>Platforma</strong> — dystrybucja, save, achievements</div>
+                    </div>
+                </section>
+
+                <!-- 01.5 — Stos technologiczny -->
+                <section id="s1-tech"
+                    data-background-gradient="radial-gradient(ellipse at 80% 40%, #1b2838 0%, #0b090a 70%)">
+                    <div class="section-header-badge">01</div>
+                    <h2 class="section-title">Stos technologiczny</h2>
+                    <div class="tech-grid">
+                        <div class="tech-card" style="--accent: #4fc3f7">
+                            <div class="tech-icon">⚙️</div>
+                            <h3>Unreal Engine 5</h3>
+                            <p>Silnik gry, rendering, fizyka</p>
+                        </div>
+                        <div class="tech-card" style="--accent: #ce93d8">
+                            <div class="tech-icon">🧩</div>
+                            <h3>VRExpansionPlugin</h3>
+                            <p>Chwytanie, ruch, replikacja VR</p>
+                        </div>
+                        <div class="tech-card" style="--accent: #81c784">
+                            <div class="tech-icon">🔧</div>
+                            <h3>C++ / Blueprint</h3>
+                            <p>Hybrydowy model programowania</p>
+                        </div>
+                        <div class="tech-card" style="--accent: #ffb74d">
+                            <div class="tech-icon">🌀</div>
+                            <h3>Physics Control</h3>
+                            <p>Active Ragdoll, interakcje fizyczne</p>
+                        </div>
+                        <div class="tech-card" style="--accent: #ef5350">
+                            <div class="tech-icon">✨</div>
+                            <h3>Niagara</h3>
+                            <p>Efekty cząsteczkowe, VFX</p>
+                        </div>
+                        <div class="tech-card" style="--accent: #42a5f5">
+                            <div class="tech-icon">🔗</div>
+                            <h3>OpenXR</h3>
+                            <p>Abstrakcja sprzętowa VR</p>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--                 02 — MoSCoW  (~5 slides)                   -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section>
+                <!-- 02.1 — Section opener: WHAT & WHY -->
+                <section id="s2-intro"
+                    data-background-gradient="radial-gradient(ellipse at 30% 70%, #162447 0%, #0b090a 70%)">
+                    <div class="section-opener">
+                        <div class="section-opener-num">02</div>
+                        <h2 class="section-opener-title">MoSCoW</h2>
+                        <p class="section-opener-why">Priorytetyzacja wymagań funkcjonalnych — <strong>co musi</strong>
+                            działać, a co <strong>może</strong> poczekać</p>
+                    </div>
+                </section>
+
+                <!-- 02.2 — Must Have -->
+                <section id="s2-must"
+                    data-background-gradient="radial-gradient(ellipse at 50% 40%, #162447 0%, #0b090a 70%)">
+                    <div class="section-header-badge">02</div>
+                    <h2 class="section-title">Must Have <span class="badge-critical">KRYTYCZNE</span></h2>
+                    <div class="moscow-grid moscow-must">
+                        <div class="moscow-item"><span class="moscow-id">M1</span><span class="moscow-name">Śledzenie VR
+                                6DoF</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M2</span><span class="moscow-name">Fizyczne
+                                ręce</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M3</span><span class="moscow-name">Chwytanie
+                                obiektów</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M4</span><span class="moscow-name">Puszczanie
+                                obiektów</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M5</span><span class="moscow-name">Strzelanie z
+                                broni</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M6</span><span class="moscow-name">Pociski
+                                fizyczne</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M7</span><span class="moscow-name">System
+                                obrażeń</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M8</span><span class="moscow-name">System
+                                zdrowia</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M9</span><span class="moscow-name">Stany
+                                zdrowia</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M10</span><span
+                                class="moscow-name">Teleportacja</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M11</span><span class="moscow-name">Detekcja
+                                slotów</span></div>
+                        <div class="moscow-item"><span class="moscow-id">M12</span><span class="moscow-name">Odrzut
+                                broni</span></div>
+                    </div>
+                </section>
+
+                <!-- 02.3 — Should Have -->
+                <section id="s2-should"
+                    data-background-gradient="radial-gradient(ellipse at 60% 50%, #162447 0%, #0b090a 70%)">
+                    <div class="section-header-badge">02</div>
+                    <h2 class="section-title">Should Have <span class="badge-should">WAŻNE</span></h2>
+                    <div class="moscow-grid moscow-should">
+                        <div class="moscow-item"><span class="moscow-id">S1</span><span class="moscow-name">System
+                                magazynów</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S2</span><span class="moscow-name">Licznik
+                                amunicji</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S3</span><span class="moscow-name">Wyrzut
+                                łusek</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S4</span><span class="moscow-name">Obsługa
+                                zamka</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S5</span><span class="moscow-name">Secondary
+                                Grip</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S6</span><span class="moscow-name">Przedmioty
+                                leczące</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S7</span><span class="moscow-name">Feedback
+                                haptyczny</span></div>
+                        <div class="moscow-item"><span class="moscow-id">S8</span><span class="moscow-name">Snap
+                                Turn</span></div>
+                    </div>
+                </section>
+
+                <!-- 02.4 — Could Have + Would Have -->
+                <section id="s2-could-would"
+                    data-background-gradient="radial-gradient(ellipse at 40% 60%, #162447 0%, #0b090a 70%)">
+                    <div class="section-header-badge">02</div>
+                    <h2 class="section-title">Could Have & Would Have</h2>
+                    <div class="two-cols">
+                        <div class="card-glass">
+                            <h3 class="card-heading" style="color: #ffb74d;">Could Have 🟡</h3>
+                            <div class="moscow-compact">
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">C1</span> Tryby ognia</div>
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">C2</span> Snap Points</div>
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">C3</span> Impact FX</div>
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">C4</span> Ragdoll</div>
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">C5</span> Penetracja</div>
+                            </div>
+                        </div>
+                        <div class="card-glass">
+                            <h3 class="card-heading" style="color: #90a4ae;">Would Have ⚪</h3>
+                            <div class="moscow-compact">
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">W1</span> Multiplayer</div>
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">W2</span> Story Mode</div>
+                                <div class="moscow-item-sm"><span class="moscow-id-sm">W3</span> Osiągnięcia</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 02.5 — Diagram immersji -->
+                <section id="s2-immersion"
+                    data-background-gradient="radial-gradient(ellipse at 50% 50%, #162447 0%, #0b090a 70%)">
+                    <div class="section-header-badge">02</div>
+                    <h2 class="section-title">Wymagania immersywne</h2>
+                    <div class="image-container">
+                        <img src="obrazki/Diagram imersji.png" alt="Diagram immersji — sfery percepcji"
+                            class="slide-image image-medium">
+                    </div>
+                    <p class="footnote">Synergia 4 sfer percepcji: wizualnej, słuchowej, dotykowej i interakcyjnej →
+                        <strong>Presence</strong>
+                    </p>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--          03 — ARCHITEKTURA SYSTEMU  (~5 slides)            -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section>
+                <!-- 03.1 — Section opener: WHAT & WHY -->
+                <section id="s3-intro"
+                    data-background-gradient="radial-gradient(ellipse at 50% 50%, #1a1a2e 0%, #0b090a 70%)">
+                    <div class="section-opener">
+                        <div class="section-opener-num">03</div>
+                        <h2 class="section-opener-title">Architektura Systemu</h2>
+                        <p class="section-opener-why"><strong>Jak</strong> zorganizowaliśmy system i
+                            <strong>dlaczego</strong> wybraliśmy te wzorce
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 03.2 — Architektura ogólna -->
+                <section id="s3-overview"
+                    data-background-gradient="radial-gradient(ellipse at 30% 30%, #1a1a2e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">03</div>
+                    <h2 class="section-title">Architektura ogólna</h2>
+                    <div class="image-container">
+                        <img src="obrazki/ogolna.png" alt="Schemat architektury ogólnej systemu" class="slide-image">
+                    </div>
+                    <p class="footnote">Jednokierunkowy przepływ danych: Wejście VR → Interakcja → Walka/Świat → Wyjście
+                        (Stereo + Haptyka)</p>
+                </section>
+
+                <!-- 03.3 — Perspektywa logiczna -->
+                <section id="s3-logical"
+                    data-background-gradient="radial-gradient(ellipse at 60% 40%, #1a1a2e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">03</div>
+                    <h2 class="section-title">Perspektywa logiczna</h2>
+                    <div class="image-container">
+                        <img src="obrazki/logical.png" alt="Architektura logiczna — pakiety"
+                            class="slide-image image-full">
+                    </div>
+                </section>
+
+                <!-- 03.4 — Wzorce projektowe -->
+                <section id="s3-patterns"
+                    data-background-gradient="radial-gradient(ellipse at 70% 30%, #1a1a2e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">03</div>
+                    <h2 class="section-title">Wzorce projektowe</h2>
+                    <div class="pattern-grid">
+                        <div class="pattern-card">
+                            <h3>Strategy</h3>
+                            <p>Tryby ognia broni</p>
+                            <div class="pattern-detail">
+                                <code>UIronFireMode</code><br>
+                                → Automatic<br>→ Burst<br>→ Single<br>→ Shotgun
+                            </div>
+                        </div>
+                        <div class="pattern-card">
+                            <h3>Chain of Responsibility</h3>
+                            <p>Obsługa trafień</p>
+                            <div class="pattern-detail">
+                                <code>UIronHitBehavior</code><br>
+                                → ApplyDamage<br>→ PhysicsImpulse<br>→ Ragdoll
+                            </div>
+                        </div>
+                        <div class="pattern-card">
+                            <h3>Component-Based</h3>
+                            <p>Modularność systemu</p>
+                            <div class="pattern-detail">
+                                <code>UIronInputEventComponent</code><br>
+                                <code>UIronSlotEventComponent</code><br>
+                                <code>UHandSocketComponent</code><br>
+                                <code>UGripMotionController</code><br>
+                                <code>UIronSliderComponent</code><br>
+                                <code>UIronBoltWeapon</code>
+                            </div>
+                        </div>
+                        <div class="pattern-card">
+                            <h3>Event-Driven</h3>
+                            <p>Komunikacja modułów</p>
+                            <div class="pattern-detail">
+                                <code>OnWeaponFired</code><br>
+                                <code>OnDeath</code><br>
+                                <code>OnStateChanged</code>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="component-list-bar">
+                        <span class="comp-chip">AIronHands</span>
+                        <span class="comp-chip">AIronCharacter</span>
+                        <span class="comp-chip">AIronWeapon</span>
+                        <span class="comp-chip">AIronProjectile</span>
+                        <span class="comp-chip">AIronShell</span>
+                        <span class="comp-chip">AIronMagazine</span>
+                    </div>
+                </section>
+
+                <!-- 03.5 — Hybrydowy model + implementacja -->
+                <section id="s3-hybrid"
+                    data-background-gradient="radial-gradient(ellipse at 80% 60%, #1a1a2e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">03</div>
+                    <h2 class="section-title">Hybrydowy C++ / Blueprint</h2>
+                    <div class="two-cols">
+                        <div>
+                            <div class="hybrid-diagram">
+                                <div class="hybrid-layer layer-cpp">
+                                    <div class="layer-label">C++ (Rdzeń)</div>
+                                    <div class="layer-items">
+                                        <span class="chip">Fizyka</span>
+                                        <span class="chip">Kolizje</span>
+                                        <span class="chip">Algorytmy</span>
+                                        <span class="chip">Interfejsy</span>
+                                    </div>
+                                </div>
+                                <div class="hybrid-arrow">▼ UCLASS / UPROPERTY / UFUNCTION ▼</div>
+                                <div class="hybrid-layer layer-bp">
+                                    <div class="layer-label">Blueprint (Treść)</div>
+                                    <div class="layer-items">
+                                        <span class="chip">Parametry</span>
+                                        <span class="chip">VFX</span>
+                                        <span class="chip">Audio</span>
+                                        <span class="chip">Prototypy</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="image-container-sm">
+                            <img src="obrazki/implementacja.png" alt="Warstwy implementacji" class="slide-image-sm">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 03.6 — Struktura repo -->
+                <section id="s3-repo"
+                    data-background-gradient="radial-gradient(ellipse at 20% 80%, #1a1a2e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">03</div>
+                    <h2 class="section-title">Struktura repozytorium</h2>
+                    <div class="image-container">
+                        <img src="obrazki/struktura_repo.png" alt="Struktura plików źródłowych i zależności modułu gry"
+                            class="slide-image image-medium">
+                    </div>
+                    <p class="footnote">Public/ (nagłówki, API) ↔ Private/ (implementacja) — separacja = szybsza
+                        kompilacja przyrostowa</p>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--    04 — ZAPEWNIENIE JAKOŚCI I WYDAJNOŚĆ  (~5 slides)       -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section>
+                <!-- 04.1 — Section opener: WHAT & WHY -->
+                <section id="s4-intro"
+                    data-background-gradient="radial-gradient(ellipse at 40% 50%, #1a202c 0%, #0b090a 70%)">
+                    <div class="section-opener">
+                        <div class="section-opener-num">04</div>
+                        <h2 class="section-opener-title">Zapewnienie Jakości<br>&amp; Wydajność</h2>
+                        <p class="section-opener-why"><strong>Jak</strong> testowaliśmy i <strong>jak</strong>
+                            utrzymaliśmy budżet klatki 11.1 ms</p>
+                    </div>
+                </section>
+
+                <!-- 04.2 — Definition of Done -->
+                <section id="s4-dod"
+                    data-background-gradient="radial-gradient(ellipse at 60% 30%, #1a202c 0%, #0b090a 70%)">
+                    <div class="section-header-badge">04</div>
+                    <h2 class="section-title">Definition of Done</h2>
+                    <div class="dod-list">
+                        <div class="dod-item"><span class="dod-check">✓</span> Kompilacja bez błędów — Development
+                            Editor <strong>+</strong> Shipping</div>
+                        <div class="dod-item"><span class="dod-check">✓</span> Zgodność z Unreal Engine Coding Standard
+                        </div>
+                        <div class="dod-item"><span class="dod-check">✓</span> Brak dyskomfortu — stabilny framerate,
+                            brak przeskoków kamery</div>
+                        <div class="dod-item"><span class="dod-check">✓</span> Mechaniki działają dla <strong>obu
+                                rąk</strong></div>
+                        <div class="dod-item"><span class="dod-check">✓</span> Interaktywność ze środowiskiem wirtualnym
+                        </div>
+                        <div class="dod-item"><span class="dod-check">✓</span> Brak wycieków pamięci / niezdefiniowanego
+                            zachowania</div>
+                    </div>
+                </section>
+
+                <!-- 04.3 — Testy manualne -->
+                <section id="s4-tests"
+                    data-background-gradient="radial-gradient(ellipse at 80% 60%, #1a202c 0%, #0b090a 70%)">
+                    <div class="section-header-badge">04</div>
+                    <h2 class="section-title">Testy manualne</h2>
+                    <div class="test-grid">
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Stopnie (Step Up)</h4>
+                            <p>Płynne wchodzenie na krawężnik 15 cm</p>
+                        </div>
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Kolizja ze ścianą</h4>
+                            <p>Ślizg bez przenikania kamery</p>
+                        </div>
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Chwyt jednoręczny</h4>
+                            <p>Poprawna reakcja na wagę obiektu</p>
+                        </div>
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Przełożenie broni</h4>
+                            <p>Płynne przekładanie między rękami</p>
+                        </div>
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Odrzut broni</h4>
+                            <p>Muzzle Rise + rozrzut przy Full Auto</p>
+                        </div>
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Przeładowanie</h4>
+                            <p>Wyrzut + zatrzaśnięcie magazynka</p>
+                        </div>
+                        <div class="test-card test-pass">
+                            <div class="test-status">✅</div>
+                            <h4>Fizyczne interakcje</h4>
+                            <p>Pchnięcie drzwi (Active Ragdoll)</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 04.4 — Wydajność VR: Pętla gry -->
+                <section id="s4-perf"
+                    data-background-gradient="radial-gradient(ellipse at 30% 40%, #1a202c 0%, #0b090a 70%)">
+                    <div class="section-header-badge">04</div>
+                    <h2 class="section-title">Budżet klatki — Game Loop</h2>
+                    <div class="image-container">
+                        <img src="obrazki/proces.png" alt="Schemat architektury procesu — game loop"
+                            class="slide-image image-medium">
+                    </div>
+                    <div class="perf-stats">
+                        <div class="perf-stat">
+                            <div class="perf-value">11.1 ms</div>
+                            <div class="perf-label">Budżet / klatka</div>
+                        </div>
+                        <div class="perf-stat">
+                            <div class="perf-value">90 Hz</div>
+                            <div class="perf-label">Target refresh</div>
+                        </div>
+                        <div class="perf-stat">
+                            <div class="perf-value">2×</div>
+                            <div class="perf-label">Stereo rendering</div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 04.5 — Optymalizacja -->
+                <section id="s4-opt"
+                    data-background-gradient="radial-gradient(ellipse at 70% 70%, #1a202c 0%, #0b090a 70%)">
+                    <div class="section-header-badge">04</div>
+                    <h2 class="section-title">Techniki optymalizacji</h2>
+                    <div class="three-cols">
+                        <div class="card-glass">
+                            <h3 class="card-heading">Rendering</h3>
+                            <ul class="styled-list">
+                                <li><strong>Instanced Rendering</strong></li>
+                                <li>LOD (Level of Detail)</li>
+                                <li>Occlusion Culling</li>
+                                <li>Baking oświetlenia</li>
+                            </ul>
+                        </div>
+                        <div class="card-glass">
+                            <h3 class="card-heading">Fizyka</h3>
+                            <ul class="styled-list">
+                                <li><strong>Uproszczone kolidery</strong></li>
+                                <li>Wyłączanie Tick nieaktywnych</li>
+                                <li>Asset streaming</li>
+                                <li>Separacja danych od logiki</li>
+                            </ul>
+                        </div>
+                        <div class="card-glass">
+                            <h3 class="card-heading">Architektura</h3>
+                            <ul class="styled-list">
+                                <li><strong>C++ dla krytycznych ścieżek</strong></li>
+                                <li>Gameplay Tags zamiast stringów</li>
+                                <li>POD Structs (cache-friendly)</li>
+                                <li>Event-driven (brak pollingu)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--               05 — SHOWCASE  (~5 slides)                  -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section>
+                <!-- 05.1 — Section opener: WHAT & WHY -->
+                <section id="s5-intro"
+                    data-background-gradient="radial-gradient(ellipse at 40% 40%, #1b263b 0%, #0b090a 70%)">
+                    <div class="section-opener">
+                        <div class="section-opener-num">05</div>
+                        <h2 class="section-opener-title">Showcase</h2>
+                        <p class="section-opener-why"><strong>Jak</strong> to działa w praktyce — kluczowe systemy i
+                            diagramy</p>
+                    </div>
+                </section>
+
+                <!-- 05.2 — Character diagram -->
+                <section id="s5-character"
+                    data-background-gradient="radial-gradient(ellipse at 60% 30%, #1b263b 0%, #0b090a 70%)">
+                    <div class="section-header-badge">05</div>
+                    <h2 class="section-title">System postaci (VR Character)</h2>
+                    <div class="image-container">
+                        <img src="obrazki/Character diagram.png" alt="Diagram systemu postaci VR"
+                            class="slide-image image-medium">
+                    </div>
+                    <p class="footnote">VRCharacter: kapsuła + fizyczne ręce + HMD tracking + Physics Control</p>
+                </section>
+
+                <!-- 05.3 — Hand diagram — fizyczne dłonie -->
+                <section id="s5-hands"
+                    data-background-gradient="radial-gradient(ellipse at 30% 60%, #1b263b 0%, #0b090a 70%)">
+                    <div class="section-header-badge">05</div>
+                    <h2 class="section-title">Fizyczne dłonie VR</h2>
+                    <div class="two-cols">
+                        <div class="image-container-sm">
+                            <img src="obrazki/Hand diagram.png" alt="Diagram systemu dłoni VR" class="slide-image-sm">
+                        </div>
+                        <div>
+                            <div class="card-glass" style="margin-bottom: 1rem;">
+                                <h3 class="card-heading" style="color: #90caf9">👻 Ghost Hand</h3>
+                                <ul class="styled-list">
+                                    <li>Niewidoczny transform (target)</li>
+                                    <li>Pozycja kontrolera <strong>1:1</strong></li>
+                                    <li>Reprezentuje <em>intencję</em> ruchu</li>
+                                </ul>
+                            </div>
+                            <div class="card-glass">
+                                <h3 class="card-heading" style="color: #ef9a9a">✊ Physical Hand</h3>
+                                <ul class="styled-list">
+                                    <li>Widoczny skeletal mesh</li>
+                                    <li>Pełna <strong>symulacja fizyczna</strong></li>
+                                    <li>Spring &amp; Damping → poczucie <em>masy</em></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 05.4 — Weapon diagram — broń dwuręczna -->
+                <section id="s5-weapon"
+                    data-background-gradient="radial-gradient(ellipse at 70% 50%, #1b263b 0%, #0b090a 70%)">
+                    <div class="section-header-badge">05</div>
+                    <h2 class="section-title">System broni</h2>
+                    <div class="image-container">
+                        <img src="obrazki/Weapon diagram.png" alt="Diagram systemu broni"
+                            class="slide-image image-medium">
+                    </div>
+                    <p class="footnote">Physics Control uśrednia siły ręki głównej i pomocniczej → stabilne celowanie,
+                        symulacja ciężaru</p>
+                </section>
+
+                <!-- 05.5 — Fizyczne interakcje ze środowiskiem -->
+                <section id="s5-environment"
+                    data-background-gradient="radial-gradient(ellipse at 20% 80%, #1b263b 0%, #0b090a 70%)">
+                    <div class="section-header-badge">05</div>
+                    <h2 class="section-title">Interakcje ze środowiskiem</h2>
+                    <div class="two-cols">
+                        <div class="card-glass">
+                            <h3 class="card-heading">Podejście systemowe</h3>
+                            <ul class="styled-list">
+                                <li><strong>Brak</strong> gotowych animacji</li>
+                                <li>Active Ragdoll = fizyczny obiekt</li>
+                                <li>Interakcje wynikają z <em>fizyki</em></li>
+                                <li>Pchnij drzwi → drzwi się otwierają</li>
+                            </ul>
+                        </div>
+                        <div class="card-glass">
+                            <h3 class="card-heading">Collision Filtering</h3>
+                            <ul class="styled-list">
+                                <li>Kanały: WorldDynamic + WorldStatic</li>
+                                <li>Ignorowanie drobnych detali</li>
+                                <li>Zapobieganie zaczepom palców</li>
+                                <li>Spójne zachowanie fizyczne</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-glass card-wide" style="margin-top: 1rem;">
+                        <p class="card-text-medium">Nie potrzeba specjalnego kodu per-obiekt. Transfer siły:
+                            <strong>masa dłoni × prędkość → obiekt</strong>
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 05.6 — Enkapsulacja kontekstu: kod -->
+                <section id="s5-code"
+                    data-background-gradient="radial-gradient(ellipse at 50% 30%, #1b263b 0%, #0b090a 70%)">
+                    <div class="section-header-badge">05</div>
+                    <h2 class="section-title">Enkapsulacja kontekstu</h2>
+                    <pre><code class="language-cpp" data-trim data-noescape>
+USTRUCT(BlueprintType)
+struct FIronGripContext
+{
+    GENERATED_BODY()
+
+    UGripMotionControllerComponent* CallingController;
+    UGripMotionControllerComponent* OtherController;
+    FGameplayTagContainer          ContextTags;
+    UObject*                       TargetObject;
+    FTransform                     ObjectTransform;
+    FVector                        ImpactPoint;
+    FName                          SlotName;
+};
+                </code></pre>
+                    <p class="footnote">Parameter Object Pattern — jedno wywołanie zamiast 7 parametrów. Ewolucja API
+                        bez refaktoru sygnatur.</p>
+                </section>
+            </section>
+
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <!--             06 — PODSUMOWANIE  (~5 slides)                 -->
+            <!-- ═══════════════════════════════════════════════════════════ -->
+            <section>
+                <!-- 06.1 — Section opener: WHAT & WHY -->
+                <section id="s6-intro"
+                    data-background-gradient="radial-gradient(ellipse at 50% 50%, #16213e 0%, #0b090a 70%)">
+                    <div class="section-opener">
+                        <div class="section-opener-num">06</div>
+                        <h2 class="section-opener-title">Podsumowanie</h2>
+                        <p class="section-opener-why"><strong>Co</strong> osiągnęliśmy i <strong>co dalej</strong></p>
+                    </div>
+                </section>
+
+                <!-- 06.2 — Stopień realizacji -->
+                <section id="s6-realization"
+                    data-background-gradient="radial-gradient(ellipse at 30% 30%, #16213e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">06</div>
+                    <h2 class="section-title">Stopień realizacji celu</h2>
+                    <div class="card-glass card-wide">
+                        <p class="card-text-big">
+                            Zrealizowano w pełni <strong>funkcjonalny prototyp</strong> VR Shooter na Oculus Quest,<br>
+                            obsługujący mechanikę strzelania, fizykę oddziaływań oraz system interakcji VR,<br>
+                            działający płynnie w wymaganym reżimie czasowym <span class="highlight">90 Hz</span>.
+                        </p>
+                    </div>
+                    <div class="card-glass card-wide" style="margin-top:1rem">
+                        <p class="card-text-medium">
+                            Model architektoniczny <strong>4+1</strong> pozwolił na skuteczną dekompozycję systemu<br>
+                            na niezależne moduły: <span class="highlight">Combat</span>, <span
+                                class="highlight">Interaction</span>, <span class="highlight">World</span>.
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 06.3 — Wnioski techniczne -->
+                <section id="s6-wnioski"
+                    data-background-gradient="radial-gradient(ellipse at 60% 50%, #16213e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">06</div>
+                    <h2 class="section-title">Wnioski</h2>
+                    <div class="conclusion-cards">
+                        <div class="conclusion-card">
+                            <div class="conclusion-icon">🏗️</div>
+                            <h3>Architektura hybrydowa</h3>
+                            <p>C++ (rdzeń) + Blueprint (treść) = krótki czas iteracji <strong>bez utraty
+                                    wydajności</strong></p>
+                        </div>
+                        <div class="conclusion-card">
+                            <div class="conclusion-icon">⚡</div>
+                            <h3>Optymalizacja VR</h3>
+                            <p>Rendering + fizyka = <strong>wąskie gardło</strong>. Instancing i uproszczone kolidery
+                                rozwiązały problem.</p>
+                        </div>
+                        <div class="conclusion-card">
+                            <div class="conclusion-icon">🧪</div>
+                            <h3>Modularność</h3>
+                            <p>Separacja warstw → <strong>niezależne testowanie</strong> podsystemów, mniej błędów
+                                regresyjnych</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 06.4 — Kierunki dalszego rozwoju -->
+                <section id="s6-future"
+                    data-background-gradient="radial-gradient(ellipse at 80% 80%, #16213e 0%, #0b090a 70%)">
+                    <div class="section-header-badge">06</div>
+                    <h2 class="section-title">Kierunki rozwoju</h2>
+                    <div class="future-timeline">
+                        <div class="future-item">
+                            <div class="future-dot"></div>
+                            <div class="future-content">
+                                <h4>Multiplayer</h4>
+                                <p>Architektura gotowa na replikację sieciową — rozszerzenie warstwy Foundation o
+                                    synchronizację stanu gry</p>
+                            </div>
+                        </div>
+                        <div class="future-item">
+                            <div class="future-dot"></div>
+                            <div class="future-content">
+                                <h4>AI — Behavior Trees</h4>
+                                <p>Zaawansowane drzewa behawioralne i system osłon dla przeciwników</p>
+                            </div>
+                        </div>
+                        <div class="future-item">
+                            <div class="future-dot"></div>
+                            <div class="future-content">
+                                <h4>Komercjalizacja</h4>
+                                <p>Solidna baza (foundation) do dalszego rozwoju komercyjnego lub badawczego</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 06.5 — Dziękujemy za uwagę -->
+                <section id="thanks"
+                    data-background-gradient="radial-gradient(ellipse at 50% 50%, #1b2838 0%, #0b090a 60%)">
+                    <div class="thanks-layout">
+                        <h2 class="thanks-title">Dziękujemy za uwagę</h2>
+                        <div class="title-divider"></div>
+                        <p class="thanks-subtitle">
+                            <span class="title-iron">Iron</span><span class="title-fall">Fall</span>
+                            <span style="opacity: 0.5; margin: 0 0.5em">—</span>
+                            VR FPS • Unreal Engine 5
+                        </p>
+                        <p class="thanks-question">Pytania? 🎤</p>
+                    </div>
+                    <div class="floating-particles" aria-hidden="true">
+                        <div class="particle p1"></div>
+                        <div class="particle p2"></div>
+                        <div class="particle p3"></div>
+                        <div class="particle p4"></div>
+                        <div class="particle p5"></div>
+                    </div>
+                </section>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/reveal.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.1.0/plugin/highlight/highlight.min.js"></script>
+    <script>
+
+        Reveal.initialize({
+            hash: true,
+            slideNumber: 'c/t',
+            showSlideNumber: 'all',
+            transition: 'slide',
+            transitionSpeed: 'default',
+            backgroundTransition: 'fade',
+            width: 1920,
+            height: 1080,
+            margin: 0.04,
+            center: true,
+            plugins: [RevealHighlight]
+        });
+    </script>
+</body>
+
+</html>
